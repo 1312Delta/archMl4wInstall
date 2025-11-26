@@ -30,7 +30,8 @@ echo "=========================================="
 echo ""
 
 # Display manager installation
-read -p "Install SDDM display manager? (y/n): " install_sddm
+printf 'Install SDDM display manager? (y/n): '
+read -r install_sddm
 if [ "$install_sddm" = "y" ]; then
     print_step "Installing SDDM..."
     sudo pacman -S --needed --noconfirm sddm
@@ -39,7 +40,8 @@ if [ "$install_sddm" = "y" ]; then
 fi
 
 # Development tools
-read -p "Install development tools (VSCode, Docker, etc.)? (y/n): " install_dev
+printf 'Install development tools (VSCode, Docker, etc.)? (y/n): '
+read -r install_dev
 if [ "$install_dev" = "y" ]; then
     print_step "Installing development tools..."
     
@@ -62,7 +64,8 @@ if [ "$install_dev" = "y" ]; then
 fi
 
 # Multimedia applications
-read -p "Install multimedia applications (VLC, GIMP, etc.)? (y/n): " install_media
+printf 'Install multimedia applications (VLC, GIMP, etc.)? (y/n): '
+read -r install_media
 if [ "$install_media" = "y" ]; then
     print_step "Installing multimedia applications..."
     sudo pacman -S --needed --noconfirm \
@@ -75,14 +78,16 @@ if [ "$install_media" = "y" ]; then
 fi
 
 # Office suite
-read -p "Install LibreOffice? (y/n): " install_office
+printf 'Install LibreOffice? (y/n): '
+read -r install_office
 if [ "$install_office" = "y" ]; then
     print_step "Installing LibreOffice..."
     sudo pacman -S --needed --noconfirm libreoffice-fresh
 fi
 
 # Gaming utilities
-read -p "Install gaming utilities (Steam, Lutris)? (y/n): " install_gaming
+printf 'Install gaming utilities (Steam, Lutris)? (y/n): '
+read -r install_gaming
 if [ "$install_gaming" = "y" ]; then
     print_step "Installing gaming utilities..."
     sudo pacman -S --needed --noconfirm \
@@ -130,7 +135,8 @@ sudo pacman -S --needed --noconfirm \
     man-pages
 
 # Oh My Zsh installation
-read -p "Install Oh My Zsh? (y/n): " install_omz
+printf 'Install Oh My Zsh? (y/n): '
+read -r install_omz
 if [ "$install_omz" = "y" ]; then
     print_step "Installing Oh My Zsh..."
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
@@ -143,7 +149,8 @@ if [ "$install_omz" = "y" ]; then
 fi
 
 # Set up automatic snapshots with timeshift
-read -p "Install Timeshift for system snapshots? (y/n): " install_timeshift
+printf 'Install Timeshift for system snapshots? (y/n): '
+read -r install_timeshift
 if [ "$install_timeshift" = "y" ]; then
     print_step "Installing Timeshift..."
     sudo pacman -S --needed --noconfirm timeshift
@@ -166,13 +173,13 @@ alias mirrors='sudo reflector --verbose --latest 10 --protocol https --sort rate
 EOF
 
 print_info "Post-installation complete!"
-echo ""
-echo "=========================================="
-echo "  Recommended next steps:                "
-echo "=========================================="
-echo "1. Reboot your system"
-echo "2. Configure Timeshift for system snapshots"
-echo "3. Customize Hyprland config in ~/.config/hypr/"
-echo "4. Explore Waybar config in ~/.config/waybar/"
-echo "5. Set up your personal wallpapers in ~/.local/share/wallpapers/"
-echo ""
+printf "\n"
+printf "==========================================\n"
+printf "  Recommended next steps:                \n"
+printf "==========================================\n"
+printf "1. Reboot your system\n"
+printf "2. Configure Timeshift for system snapshots\n"
+printf "3. Customize Hyprland config in ~/.config/hypr/\n"
+printf "4. Explore Waybar config in ~/.config/waybar/\n"
+printf "5. Set up your personal wallpapers in ~/.local/share/wallpapers/\n"
+printf "\n"
