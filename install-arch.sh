@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Arch Linux Base Installation Script
 # This script automates the base installation of Arch Linux
@@ -6,22 +6,17 @@
 
 set -e
 
-# Colors for output
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-NC='\033[0m' # No Color
-
+# Colors for output - using printf for better compatibility
 print_info() {
-    echo -e "${GREEN}[INFO]${NC} $1"
+    printf '\033[0;32m[INFO]\033[0m %s\n' "$1"
 }
 
 print_warn() {
-    echo -e "${YELLOW}[WARN]${NC} $1"
+    printf '\033[1;33m[WARN]\033[0m %s\n' "$1"
 }
 
 print_error() {
-    echo -e "${RED}[ERROR]${NC} $1"
+    printf '\033[0;31m[ERROR]\033[0m %s\n' "$1"
 }
 
 # Check if running as root
@@ -55,8 +50,9 @@ print_info "Available disks:"
 lsblk -d -o NAME,SIZE,TYPE | grep disk
 
 # Prompt for disk selection
-echo ""
-read -p "Enter the disk to install Arch (e.g., sda, nvme0n1, vda): " DISK
+printf '\n'
+printf 'Enter the disk to install Arch (e.g., sda, nvme0n1, vda): '
+read -r DISK
 DISK="/dev/${DISK}"
 
 if [ ! -b "$DISK" ]; then
@@ -65,7 +61,8 @@ if [ ! -b "$DISK" ]; then
 fi
 
 print_warn "WARNING: All data on $DISK will be erased!"
-read -p "Are you sure you want to continue? (yes/no): " CONFIRM
+printf 'Are you sure you want to continue? (yes/no): '
+read -r CONFIRM
 
 if [ "$CONFIRM" != "yes" ]; then
     print_info "Installation cancelled"
@@ -73,12 +70,16 @@ if [ "$CONFIRM" != "yes" ]; then
 fi
 
 # Get user input
-read -p "Enter hostname: " HOSTNAME
-read -p "Enter username: " USERNAME
-read -sp "Enter user password: " USER_PASSWORD
-echo ""
-read -sp "Enter root password: " ROOT_PASSWORD
-echo ""
+printf 'Enter hostname: '
+read -r HOSTNAME
+printf 'Enter username: '
+read -r USERNAME
+printf 'Enter user password: '
+read -rs USER_PASSWORD
+printf '\n'
+printf 'Enter root password: '
+read -rs ROOT_PASSWORD
+printf '\n'
 
 # Partition the disk
 print_info "Partitioning disk $DISK..."
@@ -117,7 +118,7 @@ mount "$EFI_PART" /mnt/boot
 
 # Install base system with all necessary packages
 print_info "Installing base system (this may take a while)..."
-pacstrap /mnt base linux linux-firmware base-devel networkmanager \
+pacstrap -K /mnt base linux linux-firmware base-devel networkmanager \
     grub efibootmgr nano vim git sudo wget curl \
     man-db man-pages texinfo bash-completion
 
@@ -190,17 +191,17 @@ rm /mnt/configure.sh
 print_info "==========================================="
 print_info "Base Arch Linux installation complete!"
 print_info "==========================================="
-echo ""
+printf '\n'
 print_info "System configured with:"
 print_info "  - Keyboard layout: Spanish (es)"
 print_info "  - Locale: es_ES.UTF-8"
 print_info "  - Timezone: Europe/Madrid"
 print_info "  - Hostname: $HOSTNAME"
 print_info "  - User: $USERNAME"
-echo ""
+printf '\n'
 print_info "Next steps:"
 print_info "1. umount -R /mnt"
 print_info "2. reboot"
 print_info "3. Login with your user account"
 print_info "4. Run install-ml4w.sh"
-echo ""
+printf '\n'
