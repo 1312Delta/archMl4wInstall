@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # ML4W (My Linux 4 Work) Installation Script
 # This script installs ML4W dotfiles and Hyprland environment
@@ -6,27 +6,21 @@
 
 set -e
 
-# Colors for output
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-BLUE='\033[0;34m'
-NC='\033[0m'
-
+# Colors for output - using printf for better compatibility
 print_info() {
-    echo -e "${GREEN}[INFO]${NC} $1"
+    printf '\033[0;32m[INFO]\033[0m %s\n' "$1"
 }
 
 print_warn() {
-    echo -e "${YELLOW}[WARN]${NC} $1"
+    printf '\033[1;33m[WARN]\033[0m %s\n' "$1"
 }
 
 print_error() {
-    echo -e "${RED}[ERROR]${NC} $1"
+    printf '\033[0;31m[ERROR]\033[0m %s\n' "$1"
 }
 
 print_step() {
-    echo -e "${BLUE}[STEP]${NC} $1"
+    printf '\033[0;34m[STEP]\033[0m %s\n' "$1"
 }
 
 # Check if running as regular user
@@ -44,7 +38,7 @@ fi
 
 print_info "Starting ML4W installation..."
 print_info "This will install Hyprland, ML4W dotfiles, and all dependencies"
-echo ""
+printf '\n'
 
 # Update system
 print_step "Updating system..."
@@ -158,7 +152,7 @@ xdg-user-dirs-update
 print_step "Cloning ML4W dotfiles..."
 if [ -d ~/dotfiles ]; then
     print_warn "Dotfiles directory already exists, backing up..."
-    mv ~/dotfiles ~/dotfiles.backup.$(date +%Y%m%d_%H%M%S)
+    mv ~/dotfiles ~/dotfiles.backup."$(date +%Y%m%d_%H%M%S)"
 fi
 
 cd ~
@@ -251,7 +245,6 @@ print_step "Setting up default applications..."
 xdg-mime default thunar.desktop inode/directory
 xdg-mime default firefox.desktop x-scheme-handler/http
 xdg-mime default firefox.desktop x-scheme-handler/https
-xdg-mime default org.pwmt.zathura.desktop application/pdf
 
 # Create a helper script to start Hyprland
 print_step "Creating Hyprland launcher..."
@@ -271,21 +264,21 @@ chmod +x ~/.config/hypr/start-hyprland.sh
 print_info "==========================================="
 print_info "ML4W installation complete!"
 print_info "==========================================="
-echo ""
+printf '\n'
 print_info "System configured with:"
 print_info "  - Keyboard layout: Spanish (es)"
 print_info "  - Hyprland window manager"
 print_info "  - ML4W dotfiles"
 print_info "  - All required dependencies"
-echo ""
+printf '\n'
 print_info "To start Hyprland:"
 print_info "1. Reboot: sudo reboot"
 print_info "2. Login to TTY"
 print_info "3. Type: Hyprland"
-echo ""
+printf '\n'
 print_warn "Recommended: Install a display manager"
-echo "  sudo pacman -S sddm"
-echo "  sudo systemctl enable sddm"
-echo ""
+printf '  sudo pacman -S sddm\n'
+printf '  sudo systemctl enable sddm\n'
+printf '\n'
 print_info "Run post-install.sh for additional software and optimizations"
-echo ""
+printf '\n'
